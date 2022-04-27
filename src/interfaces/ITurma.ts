@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 export interface ITurma {
-  numeroTurma: Number ;
+  numeroTurma: Number;
   alunosMatriculados: [
     {
       matriculaAluno: Number;

@@ -1,8 +1,8 @@
-import { Schema } from 'mongoose';
-import { IProfessor } from '@src/interfaces/IProfessor';
 import mongoose from 'mongoose';
+import { IProfessor } from '@src/interfaces/IProfessor';
 
-export const professorSchema = new Schema<IProfessor>({
+
+export const professorSchema = new mongoose.Schema<IProfessor>({
   nomeCompleto: {
     type: String,
     required: true,

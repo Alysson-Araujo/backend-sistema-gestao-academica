@@ -1,9 +1,9 @@
-import { Schema } from 'mongoose';
+
 import { IAluno } from '../interfaces/IAluno';
-import mongoose from 'mongoose';
+import db from 'mongoose';
 import bcryptjs from 'bcryptjs';
 
-export const alunoSchema = new Schema<IAluno>({
+export const alunoSchema = new db.Schema<IAluno>({
   nomeCompleto: {
     type: String,
     required: true,
@@ -32,8 +32,8 @@ export const alunoSchema = new Schema<IAluno>({
   turmasMatriculadas: [
     {
       turma: {
-        type: ,
-        ref: 'Turma',
+        type: db.Schema.Types.Number,
+        ref: 'Turma.numeroTurma',
         required: true,
       },
       nota01: {
@@ -47,8 +47,8 @@ export const alunoSchema = new Schema<IAluno>({
   turmasConcluidas: [
     {
       turma: {
-        type: Schema.Types.ObjectId,
-        ref: 'Turma',
+        type: db.Schema.Types.Number,
+        ref: 'Turma.numeroTurma',
         required: true,
       },
       mediaFinal: {
@@ -60,8 +60,8 @@ export const alunoSchema = new Schema<IAluno>({
   turmasReprovadas: [
     {
       turma: {
-        type: Schema.Types.ObjectId,
-        ref: 'Turma',
+        type: db.Schema.Types.Number,
+        ref: 'Turma.numeroTurma',
         required: true,
       },
       mediaFinal: {
@@ -101,4 +101,4 @@ export const alunoSchema = new Schema<IAluno>({
 //   next();
 // })
 
-export const Aluno = mongoose.model('Aluno', alunoSchema);
+export const Aluno = db.model('Aluno', alunoSchema);
