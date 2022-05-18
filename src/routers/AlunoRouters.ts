@@ -6,11 +6,17 @@ import { CreateAlunoUseCase } from '@src/use-cases/create-aluno-use-case';
 const routerAluno = Router();
 
 routerAluno.post('/registro-aluno', async (req, res) => {
-  console.log("testeeeee")  
+  console.log('testeeeee');
   try {
-    
-    const { curso, dataNascimento, email, nomeCompleto, periodo, senha, nomeUsuario } =
-      req.body;
+    const {
+      curso,
+      dataNascimento,
+      email,
+      nomeCompleto,
+      periodo,
+      senha,
+      nomeUsuario,
+    } = req.body;
     const alunoRepository = new PrismaAlunosRepository();
     const createAlunoUseCase = new CreateAlunoUseCase(alunoRepository);
 
@@ -21,7 +27,7 @@ routerAluno.post('/registro-aluno', async (req, res) => {
       nomeCompleto,
       periodo,
       senha,
-      nomeUsuario
+      nomeUsuario,
     });
 
     res.status(201).send();

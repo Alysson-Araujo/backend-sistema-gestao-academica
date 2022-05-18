@@ -7,8 +7,15 @@ export class CreateAlunoUseCase {
   constructor(private alunoRepository: AlunosRepository) {}
 
   async execute(request: AlunoCreateData) {
-    const { curso, dataNascimento, email, nomeCompleto, periodo, senha,nomeUsuario } =
-      request;
+    const {
+      curso,
+      dataNascimento,
+      email,
+      nomeCompleto,
+      periodo,
+      senha,
+      nomeUsuario,
+    } = request;
 
     if (!curso) {
       throw new Error('curso is required');
@@ -29,7 +36,6 @@ export class CreateAlunoUseCase {
       throw new Error('senha is required');
     }
 
-
     await this.alunoRepository.create({
       curso,
       dataNascimento,
@@ -37,7 +43,7 @@ export class CreateAlunoUseCase {
       nomeCompleto,
       periodo,
       senha,
-      nomeUsuario
+      nomeUsuario,
     });
   }
 }

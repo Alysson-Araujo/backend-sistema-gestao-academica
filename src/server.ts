@@ -1,6 +1,6 @@
 import express from 'express';
 import parser from 'body-parser';
-import router from  './routers/index'
+import router from './routers/index';
 const app = express();
 
 app.use(parser.json());
@@ -15,4 +15,3 @@ app.get('/usuario', (req, res) => {
 app.listen(3000, () => {
   console.log('teste de conexão na porta 3000');
 });
-
