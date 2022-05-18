@@ -1,4 +1,4 @@
-import routerAluno from './userRouters'
+import routerAluno from './AlunoRouters'
 import { Router } from 'express'
 import routerDisciplina from './disciplinaRouters';
 

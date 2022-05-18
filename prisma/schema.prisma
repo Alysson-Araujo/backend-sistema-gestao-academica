@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// uma boa leitura sobre o funcionamento do prisma com mongodb https://github.com/prisma/prisma/issues/6708
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type TurmasMatriculadas {
+  nomeTurma String
+  nota01    Float
+  nota02    Float
+}
+
+type TurmasRepro_Aprov {
+  codTurma   String
+  mediaFinal Float
+}
+
+model Aluno {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  nomeCompleto       String
+  dataNascimento     String
+  nomeUsuario        String               @unique
+  email              String
+  senha              String
+  matricula          Int                  @unique
+  turmasMatriculadas TurmasMatriculadas[]
+  turmasReprovadas   TurmasRepro_Aprov[]
+  turmasAprovadas    TurmasRepro_Aprov[]
+  periodo            Int                  @default(1)
+  curso              String
+  createdAt          DateTime             @default(now()) @db.Date
+  updatedAt          DateTime             @updatedAt @db.Date
+  Turma              Turma[]
+}
+
+model Professor {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  nomeCompleto    String
+  dataNascimento  String
+  email           String
+  senha           String
+  codigoProfessor Int
+  curso           String
+  createdAt       DateTime @default(now()) @db.Date
+  updatedAt       DateTime @updatedAt @db.Date
+  Turma           Turma[]
+}
+
+model Disciplina {
+  nomeDisciplina   String
+  codigoDisciplina String   @id @default(auto()) @map("_id") @db.ObjectId
+  preRequisitos    String[]
+  quantidadeHoras  Int
+  Turma            Turma[]
+}
+
+model Turma {
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  nomeTurma        String //Aqui vai o nome da disciplina 
+  aluno            Aluno      @relation(fields: [alunoID], references: [id])
+  alunoID          String[]   @db.ObjectId
+  professor        Professor  @relation(fields: [codigoProfessor], references: [codigoProfessor])
+  codigoProfessor  Int        @db.Int
+  semestreDaTurma  String
+  mediaTurma       Float      @db.Double
+  disciplina       Disciplina @relation(fields: [codigoDisciplina], references: [codigoDisciplina])
+  codigoDisciplina String     @db.ObjectId
+  createdAt        DateTime   @default(now()) @db.Date
+}

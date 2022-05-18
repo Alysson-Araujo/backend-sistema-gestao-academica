@@ -5,7 +5,7 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 const routerAluno = Router();
 
-routerAluno.post('/registro_disciplina', async (req, res) => {
+routerAluno.post('/registro_professor', async (req, res) => {
   try {
     // const alunoReg = new AlunoRequest(req.body);
     // const jsonTest = JSON.stringify(alunoReg);
@@ -13,11 +13,14 @@ routerAluno.post('/registro_disciplina', async (req, res) => {
     // let alunoInput: Prisma.AlunoCreateInput
     // alunoInput = JSON.parse(jsonTest)
     
-    const aluno = await prisma.disciplina.create({
+    const aluno = await prisma.professor.create({
       data:{
-        nomeDisciplina:"Matematica Discreta",
-        quantidadeHoras:64,
-        preRequisitos:["Matemática básica"],
+        curso:"engenharia",
+        nomeCompleto:"Carlos Renato Gomes",
+        dataNascimento:"16/01/1990",
+        email:"carlosrenat@contato.com",
+        senha:"teste123 sem cripto",
+        codigoProfessor:1231,
         Turma:{create:[]}
         // talvez esteja correto
       }

@@ -1,11 +1,14 @@
 import { Router } from 'express';
+import data from './data.json'
+import { Aluno } from '@src/models/Aluno';
+import { AlunoController } from '@controllers/AlunoController';
 import { AlunoRequest } from '@src/DTO/AlunoRequest';
 import { PrismaClient, Prisma } from '@prisma/client';
-
+import { Turma } from '@models/Turma';
 
 const routerAluno = Router();
 
-routerAluno.post('/registro_disciplina', async (req, res) => {
+routerAluno.post('/registro', async (req, res) => {
   try {
     // const alunoReg = new AlunoRequest(req.body);
     // const jsonTest = JSON.stringify(alunoReg);
@@ -13,13 +16,17 @@ routerAluno.post('/registro_disciplina', async (req, res) => {
     // let alunoInput: Prisma.AlunoCreateInput
     // alunoInput = JSON.parse(jsonTest)
     
-    const aluno = await prisma.disciplina.create({
+    const alunoReg = new AlunoRequest(req.body);
+    console.log(alunoReg)
+
+    const aluno = await prisma.turma.create({
       data:{
-        nomeDisciplina:"Matematica Discreta",
-        quantidadeHoras:64,
-        preRequisitos:["Matemática básica"],
-        Turma:{create:[]}
-        // talvez esteja correto
+        mediaTurma:0.0,
+        nomeTurma:"Matemática discreta - A03",
+        semestreDaTurma: "2021.1",
+        alunoID:[392103],
+        codigoProfessor:1231,
+        codigoDisciplina:"62847700ddee7a5422bb88d4"
       }
     });
 
@@ -34,7 +41,7 @@ routerAluno.post('/registro_disciplina', async (req, res) => {
 });
 
 routerAluno.get('/teste', (req,res) =>{
-
+  res.send(data);
 })
 
 
