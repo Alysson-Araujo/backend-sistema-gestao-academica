@@ -32,4 +32,5 @@ export interface AlunosRepository {
   create: (data: AlunoCreateData) => Promise<void>;
   remove: (data: AlunoDeleteData) => Promise<void>;
   update: (data: AlunoUpdateData) => Promise<void>;
+  findAlunoByMatricula: (matriculaAlunos: number) => Promise<Object>;
 }

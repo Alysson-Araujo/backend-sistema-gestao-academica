@@ -56,4 +56,8 @@ export class PrismaAlunosRepository implements AlunosRepository {
   async remove({}: AlunoDeleteData) {}
 
   async update(data: AlunoUpdateData) {}
+
+  async findAlunoByMatricula(matriculaAlunos: number) {
+    return {};
+  }
 }

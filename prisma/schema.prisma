@@ -44,10 +44,11 @@ model Professor {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   nomeCompleto    String
   dataNascimento  String
+  nomeUsuario     String
   email           String
   senha           String
-  codigoProfessor Int
-  curso           String
+  codigoProfessor BigInt   @unique @db.Long
+  formacoes       String[]
   createdAt       DateTime @default(now()) @db.Date
   updatedAt       DateTime @updatedAt @db.Date
   Turma           Turma[]
@@ -56,7 +57,7 @@ model Professor {
 model Disciplina {
   nomeDisciplina   String
   codigoDisciplina String   @id @default(auto()) @map("_id") @db.ObjectId
-  preRequisitos    String[]
+  preRequisitos    String[] @db.ObjectId
   quantidadeHoras  Int
   Turma            Turma[]
 }
@@ -64,10 +65,10 @@ model Disciplina {
 model Turma {
   id               String     @id @default(auto()) @map("_id") @db.ObjectId
   nomeTurma        String //Aqui vai o nome da disciplina 
-  aluno            Aluno      @relation(fields: [alunoID], references: [id])
-  alunoID          String[]   @db.ObjectId
-  professor        Professor  @relation(fields: [codigoProfessor], references: [codigoProfessor])
-  codigoProfessor  Int        @db.Int
+  aluno            Aluno      @relation(fields: [alunosId], references: [id])
+  alunosId          String[]   @db.ObjectId
+  professorId        Professor  @relation(fields: [codigoProfessor], references: [id])
+  codigoProfessor  String     @db.ObjectId
   semestreDaTurma  String
   mediaTurma       Float      @db.Double
   disciplina       Disciplina @relation(fields: [codigoDisciplina], references: [codigoDisciplina])

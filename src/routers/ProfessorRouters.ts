@@ -1,40 +1,39 @@
 import { Router } from 'express';
-import { AlunoRequest } from '@src/DTO/AlunoRequest';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { CreateProfessorUseCase } from '@src/use-cases/professor/create-professor-use-case';
+import { PrismaProfessorRepository } from '@src/prisma/prisma-professor-repository';
 
-const routerAluno = Router();
+const routerProfessor = Router();
 
-routerAluno.post('/registro_professor', async (req, res) => {
+routerProfessor.post('/registro-professor', async (req, res) => {
   try {
-    // const alunoReg = new AlunoRequest(req.body);
-    // const jsonTest = JSON.stringify(alunoReg);
-    const prisma = new PrismaClient();
-    // let alunoInput: Prisma.AlunoCreateInput
-    // alunoInput = JSON.parse(jsonTest)
+    const {
+      dataNascimento,
+      email,
+      formacoes,
+      nomeCompleto,
+      nomeUsuario,
+      senha,
+    } = req.body;
+    const professorRepository = new PrismaProfessorRepository();
+    const createProfessorUseCase = new CreateProfessorUseCase(
+      professorRepository
+    );
 
-    const aluno = await prisma.professor.create({
-      data: {
-        curso: 'engenharia',
-        nomeCompleto: 'Carlos Renato Gomes',
-        dataNascimento: '16/01/1990',
-        email: 'carlosrenat@contato.com',
-        senha: 'teste123 sem cripto',
-        codigoProfessor: 1231,
-        Turma: { create: [] },
-        // talvez esteja correto
-      },
+    await createProfessorUseCase.execute({
+      dataNascimento,
+      email,
+      formacoes,
+      nomeCompleto,
+      nomeUsuario,
+      senha,
     });
 
-    // if(!Aluno.findOne({nomeUsuario:`${alunoReg.getNomeUsuario}`})){
-    //  Aluno.create(alunoReg);
-    //   res.send(alunoReg);
-    // }
-    res.send(aluno);
+    res.status(201).send();
   } catch (error) {
     res.status(400).send({ error: 'Falha no registro' });
   }
 });
 
-routerAluno.get('/teste', (req, res) => {});
+routerProfessor.get('/teste', (req, res) => {});
 
-export default routerAluno;
+export default routerProfessor;

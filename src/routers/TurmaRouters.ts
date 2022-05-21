@@ -1,47 +1,56 @@
+import { PrismaDisciplinaRepository } from '@src/prisma/prisma-disciplina-repository';
+import { PrismaProfessorRepository } from '@src/prisma/prisma-professor-repository';
+import { PrismaTurmaRepository } from '@src/prisma/prisma-turma-repository';
+import { CreateTurmaUseCase } from '@src/use-cases/turma/create-turma-use-case';
+import { DeleteTurmaUseCase } from '@src/use-cases/turma/detele-turma-use-case';
 import { Router } from 'express';
-import data from './data.json';
-import { Aluno } from '@src/models/Aluno';
-import { AlunoController } from '@controllers/AlunoController';
-import { AlunoRequest } from '@src/DTO/AlunoRequest';
-import { PrismaClient, Prisma } from '@prisma/client';
-import { Turma } from '@models/Turma';
 
-const routerAluno = Router();
+const routerTurma = Router();
 
-routerAluno.post('/registro', async (req, res) => {
+routerTurma.post('/registro_turma', async (req, res) => {
   try {
-    // const alunoReg = new AlunoRequest(req.body);
-    // const jsonTest = JSON.stringify(alunoReg);
-    const prisma = new PrismaClient();
-    // let alunoInput: Prisma.AlunoCreateInput
-    // alunoInput = JSON.parse(jsonTest)
+    const { nomeTurma, codigoProfessor, semestreDaTurma, nomeDisciplina } =
+      req.body;
+    const turmaRepository = new PrismaTurmaRepository();
+    const disciplinaRepository = new PrismaDisciplinaRepository();
+    const createTurmaUseCase = new CreateTurmaUseCase(
+      turmaRepository,
+      disciplinaRepository
+    );
 
-    const alunoReg = new AlunoRequest(req.body);
-    console.log(alunoReg);
-
-    const aluno = await prisma.turma.create({
-      data: {
-        mediaTurma: 0.0,
-        nomeTurma: 'Matemática discreta - A03',
-        semestreDaTurma: '2021.1',
-        alunoID: [392103],
-        codigoProfessor: 1231,
-        codigoDisciplina: '62847700ddee7a5422bb88d4',
-      },
+    await createTurmaUseCase.execute({
+      codigoProfessor,
+      nomeDisciplina,
+      nomeTurma,
+      semestreDaTurma,
     });
 
-    // if(!Aluno.findOne({nomeUsuario:`${alunoReg.getNomeUsuario}`})){
-    //  Aluno.create(alunoReg);
-    //   res.send(alunoReg);
-    // }
-    res.send(aluno);
+    res.status(201).send();
+    res.send();
   } catch (error) {
     res.status(400).send({ error: 'Falha no registro' });
   }
 });
 
-routerAluno.get('/teste', (req, res) => {
-  res.send(data);
+routerTurma.delete('/teste_delete', (req, res) => {
+  const { codigoProfessor, nomeTurma, NomeDisciplina, nomeProfessor } =
+    req.body;
+
+  const turmaRepository = new PrismaTurmaRepository();
+  const disciplinaRepository = new PrismaDisciplinaRepository();
+  const professorRepository = new PrismaProfessorRepository();
+  const deleteTurmaUseCase = new DeleteTurmaUseCase(
+    turmaRepository,
+    disciplinaRepository,
+    professorRepository
+  );
+
+  deleteTurmaUseCase.execute({
+    NomeDisciplina,
+    codigoProfessor,
+    nomeProfessor,
+    nomeTurma,
+  });
 });
 
-export default routerAluno;
+export default routerTurma;

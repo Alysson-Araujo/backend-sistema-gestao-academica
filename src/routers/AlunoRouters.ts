@@ -1,7 +1,6 @@
 import { Router } from 'express';
-import data from './data.json';
 import { PrismaAlunosRepository } from '@src/prisma/prisma-aluno-repository';
-import { CreateAlunoUseCase } from '@src/use-cases/create-aluno-use-case';
+import { CreateAlunoUseCase } from '@src/use-cases/aluno/create-aluno-use-case';
 
 const routerAluno = Router();
 
@@ -36,8 +35,6 @@ routerAluno.post('/registro-aluno', async (req, res) => {
   }
 });
 
-routerAluno.get('/teste', (req, res) => {
-  res.send(data);
-});
+routerAluno.get('/teste', (req, res) => {});
 
 export default routerAluno;
