@@ -68,7 +68,7 @@ model Turma {
   aluno            Aluno      @relation(fields: [alunosId], references: [id])
   alunosId          String[]   @db.ObjectId
   professorId        Professor  @relation(fields: [codigoProfessor], references: [id])
-  codigoProfessor  String     @db.ObjectId
+  codigoProfessor  String     @db.ObjectId 
   semestreDaTurma  String
   mediaTurma       Float      @db.Double
   disciplina       Disciplina @relation(fields: [codigoDisciplina], references: [codigoDisciplina])

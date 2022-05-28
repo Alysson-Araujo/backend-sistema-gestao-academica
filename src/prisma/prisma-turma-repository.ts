@@ -49,12 +49,26 @@ export class PrismaTurmaRepository implements TurmaRepository {
     const prismaDisciplinaRepository = new PrismaDisciplinaRepository();
     const prismaProfessorRepository = new PrismaProfessorRepository();
 
+    const codProfessor =
+      await prismaProfessorRepository.findProfessorIdByCodigoProfessor(
+        codigoProfessor
+      );
+
     const idDisciplina =
       await prismaDisciplinaRepository.findDisciplinaIdByNomeDisciplina(
         NomeDisciplina
       );
+    const idTurma = await prisma.turma.findFirst({
+      where: {
+        codigoDisciplina: idDisciplina,
+        codigoProfessor: codProfessor,
+      },
+      select: {
+        id: true,
+      },
+    });
 
-    await prisma.turma.delete({ where: { id: idDisciplina } });
+    await prisma.turma.delete({ where: { id: idTurma?.id } });
   }
   async removeTurmaAluno(matriculaAlunos: number) {}
   async updateTurmaMedia(data: TurmaUpdateData) {}
