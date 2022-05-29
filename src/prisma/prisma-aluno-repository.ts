@@ -57,7 +57,17 @@ export class PrismaAlunosRepository implements AlunosRepository {
 
   async update(data: AlunoUpdateData) {}
 
-  async findAlunoByMatricula(matriculaAlunos: number) {
-    return {};
+  async findAlunoIdByMatricula(matriculaAluno: number) {
+    const idAluno = await prisma.aluno.findUnique({
+      where:{
+        matricula:matriculaAluno
+      },
+      select:{
+        id:true
+      }
+    });
+
+    if (!idAluno) return '';
+    else return idAluno.id.valueOf();
   }
 }

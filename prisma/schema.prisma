@@ -64,11 +64,12 @@ model Disciplina {
 
 model Turma {
   id               String     @id @default(auto()) @map("_id") @db.ObjectId
-  nomeTurma        String //Aqui vai o nome da disciplina 
+  codigoTurma      String     @unique
+  nomeTurma        String     //Aqui vai o nome da disciplina 
   aluno            Aluno      @relation(fields: [alunosId], references: [id])
-  alunosId          String[]   @db.ObjectId
-  professorId        Professor  @relation(fields: [codigoProfessor], references: [id])
-  codigoProfessor  String     @db.ObjectId 
+  alunosId         String[]   @db.ObjectId
+  professorId      Professor  @relation(fields: [codigoProfessor], references: [id])
+  codigoProfessor  String     @db.ObjectId
   semestreDaTurma  String
   mediaTurma       Float      @db.Double
   disciplina       Disciplina @relation(fields: [codigoDisciplina], references: [codigoDisciplina])

@@ -3,12 +3,14 @@ import { PrismaDisciplinaRepository } from '@prisma-repository/prisma-disciplina
 import { PrismaProfessorRepository } from '@prisma-repository/prisma-professor-repository';
 
 import {
+  TurmaAddAluno,
   TurmaCreateData,
   TurmaRemoveAlunoData,
   TurmaRemoveData,
   TurmaRepository,
   TurmaUpdateData,
 } from '@repositories/turma-repository';
+import { PrismaAlunosRepository } from './prisma-aluno-repository';
 
 export class PrismaTurmaRepository implements TurmaRepository {
   async create({
@@ -37,6 +39,7 @@ export class PrismaTurmaRepository implements TurmaRepository {
         alunosId: [],
         codigoDisciplina: disciplinaId,
         codigoProfessor: professorId,
+        codigoTurma:""
       },
     });
   }
@@ -71,6 +74,33 @@ export class PrismaTurmaRepository implements TurmaRepository {
     await prisma.turma.delete({ where: { id: idTurma?.id } });
   }
   async removeTurmaAluno(matriculaAlunos: number) {}
+  
   async updateTurmaMedia(data: TurmaUpdateData) {}
   async updateTurmaProfessor(codigoProfessor: string) {}
+
+  async addAlunoTurma ({codigoTurma,matriculaAluno}: TurmaAddAluno) {
+    const prismaAlunoRepository = new PrismaAlunosRepository();
+
+    const idAluno = await prismaAlunoRepository.findAlunoIdByMatricula(matriculaAluno)
+    
+    await prisma.turma.update({
+      where:{
+        codigoTurma,
+      },
+      data:{
+        alunosId:{
+          push:idAluno
+        }
+      }
+    })
+  }
+
+  async existsTurma(codigoTurma: string) {
+    const turma = await prisma.turma.findUnique({
+      where:{
+        codigoTurma
+      },
+    })
+    return turma ? true : false
+  }
 }
